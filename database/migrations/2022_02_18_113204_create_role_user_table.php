@@ -13,8 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->uuid('roleId')->after('id')->constrained('roles');
+        Schema::create('role_user', function (Blueprint $table) {
+            $table->uuid('user_id')->constrained('users');
+            $table->uuid('role_id')->constrained('roles');
         });
     }
 
@@ -25,8 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('roleId');
-        });
+        Schema::dropIfExists('role_user');
     }
 };

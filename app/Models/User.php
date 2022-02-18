@@ -53,9 +53,9 @@ class User extends Authenticatable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function role()
+    public function roles()
     {
-        return $this->belongsTo(Role::class, 'roleId');
+        return $this->belongsToMany(Role::class);
     }
 
     /**
@@ -63,6 +63,6 @@ class User extends Authenticatable
      */
     public function isAdmin(): bool
     {
-        return $this->role?->code === Role::ADMIN;
+        return $this->roles->some(fn (Role $role) => $role->code === Role::ADMIN);
     }
 }
