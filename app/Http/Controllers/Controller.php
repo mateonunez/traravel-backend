@@ -34,25 +34,9 @@ class Controller extends BaseController
                 return $this->sendError(Message::BAD_REQUEST, [], 400);
             }
 
-            // $query = $request->query();
-            // $filters = ControllerUtils::getRequestFilters($query);
-            // $relationships = ControllerUtils::getRequestRelationships($query);
-            // $orderBy = ControllerUtils::getRequestOrderBy($query);
-            // $paginate = ControllerUtils::getPaginate($query);
-
-            $entities = $this->model::all()
-                ->orderBy('created_at', 'desc')
-                ->get();
-
-            // foreach ($orderBy as $order) {
-            //     $entities->orderBy($order[0], $order[1]);
-            // }
-
-            // $entities = $paginate
-            //     ? $entities->paginate($this->perPage)->withQueryString()->toArray()
-            //     : $entities->get()->toArray();
-
-
+            $entities = $this->model::orderBy('createdAt', 'desc')
+                ->get()
+                ->toArray();
 
             return $this->sendResponse($entities, Message::INDEX_OK);
         } catch (\Illuminate\Database\QueryException $ex) {
@@ -88,11 +72,7 @@ class Controller extends BaseController
                 return $this->sendError(Message::BAD_REQUEST, [], 400);
             }
 
-            // $query = $request->query();
-
-            // $relationships = ControllerUtils::getRequestRelationships($query);
-
-            $entity = $this->model->find($id);
+            $entity = $this->model::find($id);
 
             if (is_null($entity)) {
                 return $this->sendNotFound();
@@ -134,7 +114,6 @@ class Controller extends BaseController
             // Saves entity with data
             $entity->save();
 
-            // TODO add log
             // Log::info(Message::CREATE_OK, __METHOD__, $entity, $request);
             $entity = $entity->fresh();
 
@@ -178,7 +157,6 @@ class Controller extends BaseController
 
             $entity = $entity->fresh();
 
-            // TODO Add log
             // Log::info(Message::UPDATE_OK, __METHOD__, $entity, $request);
             return $this->sendResponse($entity->toArray(), Message::UPDATE_OK);
         } catch (\Exception $ex) {
@@ -212,7 +190,6 @@ class Controller extends BaseController
 
             $entity->delete();
 
-            // TODO Add log
             // Log::info(Message::DELETE_OK, __METHOD__, $entity, $request);
 
             return $this->sendResponse([], Message::DELETE_OK);
