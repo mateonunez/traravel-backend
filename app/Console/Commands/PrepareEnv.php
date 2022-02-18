@@ -40,6 +40,7 @@ class PrepareEnv extends Command
      */
     public function handle()
     {
+        // ! Testing is doesn't working as expected
         $testing = $this->option('testing');
 
         // Checking for env file
@@ -115,7 +116,7 @@ class PrepareEnv extends Command
 
         $envParsed = Dotenv::parse(file_get_contents($envRealpath));
 
-        return $envParsed['APP_KEY'] !== '';
+        return !empty($envParsed['APP_KEY']);
     }
 
     /**
