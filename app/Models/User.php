@@ -49,4 +49,20 @@ class User extends Authenticatable
     protected $casts = [
         'emailVerifiedAt' => 'datetime',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'roleId');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role?->code === Role::ADMIN;
+    }
 }
