@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Lib\Message;
+use App\Lib\ControllerUtils;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -34,7 +35,12 @@ class Controller extends BaseController
                 return $this->sendError(Message::BAD_REQUEST, [], 400);
             }
 
-            $entities = $this->model::orderBy('createdAt', 'desc')
+            $query = $request->query();
+
+            $relationships = ControllerUtils::getRequestRelationships($query);
+
+            $entities = $this->model::with($relationships)
+                ->orderBy('createdAt', 'desc')
                 ->get()
                 ->toArray();
 
@@ -72,7 +78,12 @@ class Controller extends BaseController
                 return $this->sendError(Message::BAD_REQUEST, [], 400);
             }
 
-            $entity = $this->model::find($id);
+            $query = $request->query();
+
+            $relationships = ControllerUtils::getRequestRelationships($query);
+
+            $entity = $this->model::with($relationships)
+                ->find($id);
 
             if (is_null($entity)) {
                 return $this->sendNotFound();
