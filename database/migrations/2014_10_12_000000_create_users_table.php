@@ -23,8 +23,9 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
 
-            $table->timestamp('createdAt');
-            $table->timestamp('updatedAt')->nullable();
+            // After the CI/CD integration I must add default values on timestamp fields (https://stackoverflow.com/a/60814312/11578351)
+            $table->timestamp('createdAt')->useCurrent();
+            $table->timestamp('updatedAt')->nullable()->useCurrentOnUpdate();
 
             $table->softDeletes('deletedAt');
         });

@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('code');
             $table->string('description')->nullable();
 
-            $table->timestamp('createdAt');
-            $table->timestamp('updatedAt')->nullable();
+            $table->timestamp('createdAt')->useCurrent();
+            $table->timestamp('updatedAt')->nullable()->useCurrentOnUpdate();
 
             $table->softDeletes('deletedAt');
         });

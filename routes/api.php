@@ -24,3 +24,14 @@ Route::group([
     Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
     Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
 });
+
+/**
+ * Admin routes
+ */
+Route::group([
+    'middleware' => ['auth:api', 'admin']
+], function () {
+    Route::apiResources([
+        '/users' => \App\Http\Controllers\UserController::class,
+    ]);
+});

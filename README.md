@@ -31,3 +31,30 @@ Run the following command:
 ```shell
 php artisan prepare:env
 ```
+
+## Testing Configuration
+
+Generate the key
+
+```shell
+php artisan key:generate --env=testing
+```
+
+Run the migrations
+
+```shell
+php artisan migrate:fresh --env=testing
+```
+
+Install Passport
+
+```shell
+php artisan passport:install --env=testing
+php artisan passport:keys --env=testing --force
+```
+
+Run the tests
+
+```shell
+php artisan test
+```
