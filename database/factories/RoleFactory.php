@@ -22,7 +22,7 @@ class RoleFactory extends Factory
         return [
             'name' => Str::ucfirst($role),
             'code' => Str::lower($role),
-            'descrpition' => $role . ' role',
+            'description' => $role . ' role',
         ];
     }
 }
