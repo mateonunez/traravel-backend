@@ -22,10 +22,12 @@ class UserSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@traravel.com',
             'password' => Hash::make('admin'),
-            'roleId' => Role::getAdminRole()->id,
             'emailVerifiedAt' => Carbon::now()
         ];
 
-        User::create($payloadAdmin);
+        $userAdmin = User::create($payloadAdmin);
+        $roleAdmin = Role::getAdminRole();
+
+        $userAdmin->roles()->attach($roleAdmin);
     }
 }

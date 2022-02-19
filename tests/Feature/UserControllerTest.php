@@ -68,13 +68,10 @@ class UserControllerTest extends TestCase
     /** @group user_controller */
     public function test_store()
     {
-        $role = \App\Models\Role::factory()->create();
-
         $payload = [
             'name' => 'Test',
             'email' => 'test@example.com',
             'password' => bcrypt('test'),
-            'roleId' => $role->id,
         ];
 
         $response = $this->post('/api/users', $payload);
@@ -143,7 +140,6 @@ class UserControllerTest extends TestCase
             'name' => 'Test',
             'email' => $user->email,
             'password' => bcrypt('test'),
-            'roleId' => $user->roleId,
         ];
 
         $response = $this->post('/api/users', $payload);

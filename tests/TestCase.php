@@ -57,8 +57,9 @@ abstract class TestCase extends BaseTestCase
             $this->userAdmin = User::factory()->create([
                 'email' => $payload['email'],
                 'password' => bcrypt($payload['password']),
-                'roleId' => $this->roleAdmin->id,
             ]);
+
+            $this->userAdmin->roles()->attach($this->roleAdmin);
         }
 
         Passport::actingAs($this->userAdmin);

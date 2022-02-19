@@ -49,7 +49,7 @@ php artisan migrate:fresh --env=testing
 Install Passport
 
 ```shell
-php artisan passport:install --env=testing
+php artisan passport:install --uuids --env=testing
 php artisan passport:keys --env=testing --force
 ```
 

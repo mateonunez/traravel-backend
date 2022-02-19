@@ -25,13 +25,32 @@ Route::group([
     Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
 });
 
+
 /**
- * Admin routes
+ * Authenticated routes
  */
 Route::group([
-    'middleware' => ['auth:api', 'admin']
+    'middleware' => 'auth:api',
+    'as' => 'app.'
 ], function () {
-    Route::apiResources([
-        '/users' => \App\Http\Controllers\UserController::class,
-    ]);
+
+    // Users
+    Route::group([
+        'prefix' => 'users',
+        'as' => 'users.'
+    ], function () {
+        // Profile
+        Route::get('/me', [\App\Http\Controllers\UserController::class, 'me']);
+    });
+
+    /**
+     * Admin routes
+     */
+    Route::group([
+        'middleware' => ['admin']
+    ], function () {
+        Route::apiResources([
+            '/users' => \App\Http\Controllers\UserController::class,
+        ]);
+    });
 });
