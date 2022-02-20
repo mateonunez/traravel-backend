@@ -27,7 +27,8 @@ class TravelSeeder extends Seeder
         $payloadIceland = [
             'name' => 'Iceland: hunting for the Northern Lights',
             'description' => "Why visit Iceland in winter? Because it is between October and March that this land offers the spectacle of the Northern Lights, one of the most incredible and magical natural phenomena in the world, visible only near the earth's two magnetic poles. Come with us on WeRoad to explore this land of ice and fire, full of contrasts and natural variety, where the energy of waterfalls and geysers meets the peace of the fjords... And when the ribbons of light of the aurora borealis twinkle in the sky before our enchanted eyes, we will know that we have found what we were looking for.",
-            'numberOfDays' => 8
+            'numberOfDays' => 8,
+            'isPublic' => true
         ];
 
         $payloadUAE = [
