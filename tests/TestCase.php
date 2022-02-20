@@ -13,15 +13,17 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication, RefreshDatabase;
 
-    /**
-     * @var \App\Models\Role
-     */
+    /** @var \App\Models\Role */
     protected $roleAdmin;
 
-    /**
-     * @var \App\Models\User
-     */
+    /** @var \App\Models\Role */
+    protected $roleEditor;
+
+    /** @var \App\Models\User */
     protected $userAdmin;
+
+    /** @var \App\Models\User */
+    protected $userEditor;
 
     /**
      * Initial setup for tests.
@@ -63,5 +65,33 @@ abstract class TestCase extends BaseTestCase
         }
 
         Passport::actingAs($this->userAdmin);
+    }
+
+    /**
+     * Return admin headers for API calls.
+     *
+     * @return void
+     */
+    protected function actingAsEditor(): void
+    {
+        $payload = [
+            'email' => 'editor@traravel.com',
+            'password' => Hash::make('editor'),
+        ];
+
+        if (!$this->roleEditor) {
+            $this->roleEditor = Role::factory()->create(['code' => Role::EDITOR]);
+        }
+
+        if (!$this->userEditor) {
+            $this->userEditor = User::factory()->create([
+                'email' => $payload['email'],
+                'password' => bcrypt($payload['password']),
+            ]);
+
+            $this->userEditor->roles()->attach($this->roleEditor);
+        }
+
+        Passport::actingAs($this->userEditor);
     }
 }

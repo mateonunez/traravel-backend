@@ -65,4 +65,12 @@ class User extends Authenticatable
     {
         return $this->roles->some(fn (Role $role) => $role->code === Role::ADMIN);
     }
+
+    /**
+     * @return bool
+     */
+    public function isEditor(): bool
+    {
+        return $this->isAdmin() || $this->roles->some(fn (Role $role) => $role->code === Role::EDITOR);
+    }
 }

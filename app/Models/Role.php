@@ -15,6 +15,9 @@ class Role extends Model
     public const ADMIN = 'admin';
 
     /** @var string */
+    public const EDITOR = 'editor';
+
+    /** @var string */
     public const CREATED_AT = 'createdAt';
 
     /** @var string */
@@ -36,5 +39,13 @@ class Role extends Model
     public static function getAdminRole()
     {
         return self::where('code', self::ADMIN)->first();
+    }
+
+    /**
+     * @return \App\Models\Role
+     */
+    public static function getEditorRole()
+    {
+        return self::where('code', self::EDITOR)->first();
     }
 }
