@@ -2,20 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Mood;
 use App\Traits\HasUuid;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Role extends Model
+class Travel extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
-
-    /** @var string */
-    public const ADMIN = 'admin';
-
-    /** @var string */
-    public const EDITOR = 'editor';
 
     /** @var string */
     public const CREATED_AT = 'createdAt';
@@ -28,24 +23,21 @@ class Role extends Model
 
     /** @var array */
     protected $fillable = [
+        'isPublic',
+        'slug',
         'name',
-        'code',
         'description',
+        'numberOfDays'
     ];
 
-    /**
-     * @return \App\Models\Role
-     */
-    public static function getAdminRole()
-    {
-        return self::where('code', self::ADMIN)->first();
-    }
+    /** @var string */
+    protected $table = 'travels';
 
     /**
-     * @return \App\Models\Role
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public static function getEditorRole()
+    public function moods()
     {
-        return self::where('code', self::EDITOR)->first();
+        return $this->belongsToMany(Mood::class);
     }
 }

@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Database\Seeders\MoodSeeder;
 use Database\Seeders\UserSeeder;
+use Database\Seeders\TravelSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
@@ -17,7 +19,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            MoodSeeder::class,
+            TravelSeeder::class,
         ]);
     }
 }

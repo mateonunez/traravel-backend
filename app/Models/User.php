@@ -51,7 +51,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function roles()
     {
@@ -64,5 +64,13 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->roles->some(fn (Role $role) => $role->code === Role::ADMIN);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEditor(): bool
+    {
+        return $this->isAdmin() || $this->roles->some(fn (Role $role) => $role->code === Role::EDITOR);
     }
 }

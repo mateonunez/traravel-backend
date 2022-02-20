@@ -7,15 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Role extends Model
+class Mood extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
-
-    /** @var string */
-    public const ADMIN = 'admin';
-
-    /** @var string */
-    public const EDITOR = 'editor';
 
     /** @var string */
     public const CREATED_AT = 'createdAt';
@@ -29,23 +23,6 @@ class Role extends Model
     /** @var array */
     protected $fillable = [
         'name',
-        'code',
         'description',
     ];
-
-    /**
-     * @return \App\Models\Role
-     */
-    public static function getAdminRole()
-    {
-        return self::where('code', self::ADMIN)->first();
-    }
-
-    /**
-     * @return \App\Models\Role
-     */
-    public static function getEditorRole()
-    {
-        return self::where('code', self::EDITOR)->first();
-    }
 }

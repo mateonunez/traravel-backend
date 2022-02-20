@@ -43,6 +43,18 @@ Route::group([
         Route::get('/me', [\App\Http\Controllers\UserController::class, 'me']);
     });
 
+    // Travels
+    Route::group([
+        'prefix' => 'travels',
+        'as' => 'travels.'
+    ], function () {
+        Route::get('/', [\App\Http\Controllers\TravelController::class, 'index']);
+        Route::get('/{id}', [\App\Http\Controllers\TravelController::class, 'show']);
+
+        Route::post('/', [\App\Http\Controllers\TravelController::class, 'store'])->middleware('admin');
+        Route::put('/{id}', [\App\Http\Controllers\TravelController::class, 'update'])->middleware('editor');
+    });
+
     /**
      * Admin routes
      */

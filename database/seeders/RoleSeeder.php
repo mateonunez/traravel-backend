@@ -21,6 +21,13 @@ class RoleSeeder extends Seeder
             'description' => 'Administrator',
         ];
 
+        $payloadEditor = [
+            'name' => 'Editor',
+            'code' => 'editor',
+            'description' => 'Editor',
+        ];
+
         Role::create($payloadAdmin);
+        Role::create($payloadEditor);
     }
 }
