@@ -27,6 +27,30 @@ class ControllerUtils
     }
 
     /**
+     * Append filter to query
+     *
+     * @param string|null $filters
+     * @param string $filter
+     *
+     * @return string
+     */
+    public static function appendFilter($filters, string $filter): string
+    {
+        try {
+            if (empty($filters)) {
+                return "[" . $filter . "]";
+            }
+
+            $filters = substr($filters, 0, -1);
+            $filters .= "," . $filter . "]";
+
+            return $filters;
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    /**
      * Parse query parameters filters
      *
      * @param array $query
@@ -81,13 +105,27 @@ class ControllerUtils
         foreach ($filters as $filter) {
             foreach ($operators as $k => $v) {
                 $params = explode($k, $filter);
+
                 if (count($params) > 1) {
-                    if ($params[1] == 'null') {
+                    if ($params[1] === 'null') {
                         $params[1] = null;
                     }
+
+                    if ($params[1] === 'true') {
+                        $params[1] = true;
+                    }
+
+                    if ($params[1] === 'false') {
+                        $params[1] = false;
+                    }
+
                     $column = $params[0];
-                    $operator = $v;
+                    $operator = $operators[$k];
                     $value = $params[1];
+
+                    if ($operator === 'LIKE') {
+                        $value = '%' . $value . '%';
+                    }
 
                     $filtersArray[] = [$column, $operator, $value];
                 }
