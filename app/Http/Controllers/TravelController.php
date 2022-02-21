@@ -25,12 +25,12 @@ class TravelController extends Controller
     {
         try {
             $user = is_null(auth()->user())
-                ? auth()->user('api')
+                ? auth('api')->user()
                 : auth()->user();
 
             $travels = $this->model::with('moods');
 
-            if (!$user->isEditor()) {
+            if (!$user || !$user?->isEditor()) {
                 $travels = $travels->where('isPublic', true);
             }
 

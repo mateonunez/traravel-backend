@@ -24,7 +24,7 @@ class UserController extends Controller
     {
         try {
             $userLogged = is_null(auth()->user())
-                ? auth()->user('api')
+                ? auth('api')->user()
                 : auth()->user();
 
             if (is_null($userLogged)) {
