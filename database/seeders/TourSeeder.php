@@ -25,7 +25,7 @@ class TourSeeder extends Seeder
                 'description' => 'Tour: ' . $travels[$k]->name . ' #' . $k,
                 'startingDate' => now(),
                 'endingDate' => now()->addDays(rand(1, 10)),
-                'price' => rand(1000, 10000)
+                'price' => rand(10000, 100000)
             ];
 
             Tour::create($payload);
