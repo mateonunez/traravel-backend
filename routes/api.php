@@ -31,6 +31,8 @@ Route::group([
     'prefix' => 'travels',
     'as' => 'travels.'
 ], function () {
+    Route::get('/search', [\App\Http\Controllers\TravelController::class, 'search']);
+
     Route::get('/', [\App\Http\Controllers\TravelController::class, 'index']);
     Route::get('/{id}', [\App\Http\Controllers\TravelController::class, 'show']);
 

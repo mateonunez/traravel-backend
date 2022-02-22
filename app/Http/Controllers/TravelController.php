@@ -42,4 +42,31 @@ class TravelController extends Controller
             return $this->sendError($e->getMessage());
         }
     }
+
+    /**
+     * Search API
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function search(Request $request): JsonResponse
+    {
+        try {
+            $travels = $this->model::with('moods')
+                ->where('isPublic', true)
+                ->limit(3);
+
+            $query = $request->query();
+
+            // search criteria
+
+            $travels = $travels->get()->toArray();
+
+            return $this->sendResponse($travels, Message::INDEX_OK);
+        } catch (\Exception $e) {
+            // TODO Add log here
+            return $this->sendError($e->getMessage());
+        }
+    }
 }
