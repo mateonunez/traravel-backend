@@ -6,6 +6,7 @@ use App\Models\Travel;
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tour extends Model
@@ -37,5 +38,17 @@ class Tour extends Model
     public function travel()
     {
         return $this->belongsTo(Travel::class);
+    }
+
+    /**
+     * Casting the price
+     *
+     * @return  \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function price(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) => $value / 100,
+        );
     }
 }
