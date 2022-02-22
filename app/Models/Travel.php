@@ -38,6 +38,10 @@ class Travel extends Model
      */
     public function moods()
     {
-        return $this->belongsToMany(Mood::class);
+        return $this->belongsToMany(Mood::class)
+            ->orderBy('rating', 'desc')
+            ->withPivot([
+                'rating'
+            ]);
     }
 }

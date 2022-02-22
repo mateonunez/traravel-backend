@@ -25,14 +25,41 @@ class TravelController extends Controller
     {
         try {
             $user = is_null(auth()->user())
-                ? auth()->user('api')
+                ? auth('api')->user()
                 : auth()->user();
 
             $travels = $this->model::with('moods');
 
-            if (!$user->isEditor()) {
+            if (!$user || !$user?->isEditor()) {
                 $travels = $travels->where('isPublic', true);
             }
+
+            $travels = $travels->get()->toArray();
+
+            return $this->sendResponse($travels, Message::INDEX_OK);
+        } catch (\Exception $e) {
+            // TODO Add log here
+            return $this->sendError($e->getMessage());
+        }
+    }
+
+    /**
+     * Search API
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function search(Request $request): JsonResponse
+    {
+        try {
+            $travels = $this->model::with('moods')
+                ->where('isPublic', true)
+                ->limit(3);
+
+            $query = $request->query();
+
+            // search criteria
 
             $travels = $travels->get()->toArray();
 

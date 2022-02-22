@@ -24,5 +24,6 @@ class Mood extends Model
     protected $fillable = [
         'name',
         'description',
+        'emoji'
     ];
 }
