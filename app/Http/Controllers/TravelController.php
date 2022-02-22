@@ -28,7 +28,7 @@ class TravelController extends Controller
                 ? auth('api')->user()
                 : auth()->user();
 
-            $travels = $this->model::with('moods');
+            $travels = $this->model::with(['moods', 'tours']);
 
             if (!$user || !$user?->isEditor()) {
                 $travels = $travels->where('isPublic', true);

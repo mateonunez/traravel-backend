@@ -44,4 +44,12 @@ class Travel extends Model
                 'rating'
             ]);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tours()
+    {
+        return $this->hasMany(Tour::class, 'travelId');
+    }
 }
