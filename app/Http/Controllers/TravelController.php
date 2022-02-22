@@ -69,4 +69,35 @@ class TravelController extends Controller
             return $this->sendError($e->getMessage());
         }
     }
+
+    /**
+     * Show API
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param mixed $slugOrId
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show(Request $request, $slugOrId): JsonResponse
+    {
+        try {
+            $user = is_null(auth()->user())
+                ? auth('api')->user()
+                : auth()->user();
+
+            $travel = $this->model::with(['moods', 'tours'])
+                ->where('slug', $slugOrId)
+                ->orWhere('id', $slugOrId)
+                ->first();
+
+            if (!$user || !$user?->isEditor() && !$travel->isPublic) {
+                return $this->sendNotFound();
+            }
+
+            return $this->sendResponse($travel->toArray(), Message::SHOW_OK);
+        } catch (\Exception $e) {
+            // TODO Add log here
+            return $this->sendError($e->getMessage());
+        }
+    }
 }
