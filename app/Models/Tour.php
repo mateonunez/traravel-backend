@@ -31,6 +31,12 @@ class Tour extends Model
         'price'
     ];
 
+    /** @var array */
+    protected $casts = [
+        'startingDate' => 'datetime',
+        'endingDate' => 'datetime',
+    ];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
