@@ -28,7 +28,7 @@ class TravelController extends Controller
                 ? auth('api')->user()
                 : auth()->user();
 
-            $travels = $this->model::with('moods');
+            $travels = $this->model::with(['moods', 'tours']);
 
             if (!$user || !$user?->isEditor()) {
                 $travels = $travels->where('isPublic', true);
@@ -64,6 +64,37 @@ class TravelController extends Controller
             $travels = $travels->get()->toArray();
 
             return $this->sendResponse($travels, Message::INDEX_OK);
+        } catch (\Exception $e) {
+            // TODO Add log here
+            return $this->sendError($e->getMessage());
+        }
+    }
+
+    /**
+     * Show API
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param mixed $slugOrId
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show(Request $request, $slugOrId): JsonResponse
+    {
+        try {
+            $user = is_null(auth()->user())
+                ? auth('api')->user()
+                : auth()->user();
+
+            $travel = $this->model::with(['moods', 'tours'])
+                ->where('slug', $slugOrId)
+                ->orWhere('id', $slugOrId)
+                ->first();
+
+            if (!$user || !$user?->isEditor() && !$travel->isPublic) {
+                return $this->sendNotFound();
+            }
+
+            return $this->sendResponse($travel->toArray(), Message::SHOW_OK);
         } catch (\Exception $e) {
             // TODO Add log here
             return $this->sendError($e->getMessage());

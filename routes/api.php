@@ -25,7 +25,6 @@ Route::group([
     Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
 });
 
-
 // Travels
 Route::group([
     'prefix' => 'travels',
@@ -42,6 +41,20 @@ Route::group([
     ], function () {
         Route::post('/', [\App\Http\Controllers\TravelController::class, 'store'])->middleware('admin');
         Route::put('/{id}', [\App\Http\Controllers\TravelController::class, 'update'])->middleware('editor');
+    });
+});
+
+// Tours
+Route::group([
+    'prefix' => 'tours',
+    'as' => 'tours.'
+], function () {
+    Route::group([
+        'middleware' => 'auth:api',
+        'as' => 'auth.'
+    ], function () {
+        Route::post('/', [\App\Http\Controllers\TourController::class, 'store'])->middleware('admin');
+        Route::put('/{id}', [\App\Http\Controllers\TourController::class, 'update'])->middleware('editor');
     });
 });
 

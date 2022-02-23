@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
 
         // Custom middlewares
         'admin' => \App\Http\Middleware\Admin::class,
+        'editor' => \App\Http\Middleware\Editor::class,
     ];
 }
