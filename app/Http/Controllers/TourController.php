@@ -45,7 +45,7 @@ class TourController extends Controller
             }
 
             $travel->update([
-                'numberOfDays' => $numberOfDays
+                'numberOfDays' => $travel->$numberOfDays + $numberOfDays
             ]);
 
             return $this->sendResponse($tour->toArray(), Message::CREATE_OK);
@@ -85,7 +85,7 @@ class TourController extends Controller
             }
 
             $travel->update([
-                'numberOfDays' => $numberOfDays
+                'numberOfDays' => $travel->$numberOfDays + $numberOfDays
             ]);
 
             return $this->sendResponse(
