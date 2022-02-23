@@ -20,6 +20,26 @@ class TravelObserver
             $travel->slug = Str::slug(Str::lower($travel->name));
         }
 
-        $travel->numberOfNights = $travel->numberOfDays - 1;
+        $travel->numberOfNights = $travel->numberOfDays > 0
+            ? $travel->numberOfDays - 1
+            : 0;
+    }
+
+    /**
+     * Handle the travel "updating" event.
+     *
+     * @param \App\Models\Travel $travel
+     *
+     * @return void
+     */
+    public function updating(Travel $travel)
+    {
+        if (empty($travel->slug)) {
+            $travel->slug = Str::slug(Str::lower($travel->name));
+        }
+
+        $travel->numberOfNights = $travel->numberOfDays !== 0
+            ? $travel->numberOfDays - 1
+            : 0;
     }
 }
