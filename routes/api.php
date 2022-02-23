@@ -45,23 +45,18 @@ Route::group([
 });
 
 // Tours
-// Route::group([
-//     'prefix' => 'tours',
-//     'as' => 'tours.'
-// ], function () {
-//     Route::get('/search', [\App\Http\Controllers\TourController::class, 'search']);
-
-//     Route::get('/', [\App\Http\Controllers\TourController::class, 'index']);
-//     Route::get('/{id}', [\App\Http\Controllers\TourController::class, 'show']);
-
-//     Route::group([
-//         'middleware' => 'auth:api',
-//         'as' => 'auth.'
-//     ], function () {
-//         Route::post('/', [\App\Http\Controllers\TourController::class, 'store'])->middleware('admin');
-//         Route::put('/{id}', [\App\Http\Controllers\TourController::class, 'update'])->middleware('editor');
-//     });
-// });
+Route::group([
+    'prefix' => 'tours',
+    'as' => 'tours.'
+], function () {
+    Route::group([
+        'middleware' => 'auth:api',
+        'as' => 'auth.'
+    ], function () {
+        Route::post('/', [\App\Http\Controllers\TourController::class, 'store'])->middleware('admin');
+        Route::put('/{id}', [\App\Http\Controllers\TourController::class, 'update'])->middleware('editor');
+    });
+});
 
 /**
  * Authenticated routes

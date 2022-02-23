@@ -24,7 +24,6 @@ class Tour extends Model
 
     /** @var array */
     protected $fillable = [
-        'travelId',
         'name',
         'description',
         'startingDate',
@@ -37,7 +36,7 @@ class Tour extends Model
      */
     public function travel()
     {
-        return $this->belongsTo(Travel::class);
+        return $this->belongsTo(Travel::class, 'travelId');
     }
 
     /**
@@ -49,6 +48,7 @@ class Tour extends Model
     {
         return new Attribute(
             get: fn ($value) => $value / 100,
+            set: fn ($value) => $value * 100
         );
     }
 }
