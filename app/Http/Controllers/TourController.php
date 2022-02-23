@@ -24,7 +24,35 @@ class TourController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        return $this->store($request);
+        try {
+            // TODO Add validation
+            $payload = $request->all();
+
+            $travel = Travel::find($payload['travelId']);
+
+            if (!$travel) {
+                // TODO Add log here
+                return $this->sendError(Message::NOT_FOUND);
+            }
+
+            $tour = $this->model::create($payload);
+
+            $travel = $tour->travel;
+
+            $numberOfDays = Travel::computeNumberOfDays($payload['startingDate'], $payload['endingDate']);
+            if ($numberOfDays < 0) {
+                return $this->sendError(Message::INVALID_DATE);
+            }
+
+            $travel->update([
+                'numberOfDays' => $numberOfDays
+            ]);
+
+            return $this->sendResponse($tour->toArray(), Message::CREATE_OK);
+        } catch (\Exception $ex) {
+            // TODO Log error
+            return $this->sendError($ex->getMessage());
+        }
     }
 
     /**

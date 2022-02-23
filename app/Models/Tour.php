@@ -24,6 +24,7 @@ class Tour extends Model
 
     /** @var array */
     protected $fillable = [
+        'travelId',
         'name',
         'description',
         'startingDate',
