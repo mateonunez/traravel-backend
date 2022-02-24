@@ -30,13 +30,20 @@ class TravelController extends Controller
                 ? auth('api')->user()
                 : auth()->user();
 
-            $travels = $this->model::with(['moods', 'tours']);
+            $travels = $this->model::with([
+                'moods',
+                'tours' => fn ($q) => $q->orderBy('startingDate', 'asc')
+            ])
+                ->where('isPublic', true);
 
             if (!$user || !$user?->isEditor()) {
                 $travels = $travels->where('isPublic', true);
             }
 
-            $travels = $travels->get()->toArray();
+
+            $travels = $travels
+                ->get()
+                ->toArray();
 
             return $this->sendResponse($travels, Message::INDEX_OK);
         } catch (\Exception $e) {
@@ -60,7 +67,10 @@ class TravelController extends Controller
                 ? auth('api')->user()
                 : auth()->user();
 
-            $travel = $this->model::with(['moods', 'tours'])
+            $travel = $this->model::with([
+                'moods',
+                'tours' => fn ($q) => $q->orderBy('startingDate', 'asc')
+            ])
                 ->where('slug', $slugOrId)
                 ->orWhere('id', $slugOrId)
                 ->first();

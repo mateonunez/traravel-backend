@@ -42,10 +42,13 @@ class SearchController extends Controller
             }
 
             if (!$type) {
-                $travels = Travel::with(['moods', 'tours'])
+                $travels = Travel::with([
+                    'moods',
+                    'tours' => fn ($q) => $q->orderBy('startingDate', 'asc')
+                ])
                     ->where('isPublic', true)
                     ->where('name', 'like', "%{$q}%")
-                    ->orWhere('description', 'like', "%{q}")
+                    ->orWhere('description', 'like', "%{$q}%")
                     ->limit(3)
                     ->get()
                     ->toArray();
@@ -53,7 +56,8 @@ class SearchController extends Controller
                 $tours = Tour::with(['travel'])
                     ->whereHas('travel', fn ($q) => $q->where('isPublic', true))
                     ->where('name', 'like', "%{$q}%")
-                    ->orWhere('description', 'like', "%{q}")
+                    ->orWhere('description', 'like', "%{$q}%")
+                    ->orderBy('startingDate', 'asc')
                     ->limit(3)
                     ->get()
                     ->toArray();
@@ -73,28 +77,33 @@ class SearchController extends Controller
                 ];
             } else {
                 switch ($type) {
-                    case 'tours':
-                        $tours = Tour::with(['travel'])
-                            ->whereHas('travel', fn ($q) => $q->where('isPublic', true))
-                            ->where('name', 'like', "%{$q}%")
-                            ->orWhere('description', 'like', "%{q}")
-                            ->limit(3)
-                            ->get()
-                            ->toArray();
-
-                        $results = ['tours' => $tours];
-                        break;
                     case 'travels':
-                        $travels = Travel::with(['moods', 'tours'])
+                        $travels = Travel::with([
+                            'moods',
+                            'tours' => fn ($q) => $q->orderBy('startingDate', 'asc')
+                        ])
                             ->where('isPublic', true)
                             ->where('name', 'like', "%{$q}%")
-                            ->orWhere('description', 'like', "%{q}")
+                            ->orWhere('description', 'like', "%{$q}%")
                             ->limit(3)
                             ->get()
                             ->toArray();
 
                         $results = ['travels' => $travels];
                         break;
+
+                    case 'tours':
+                        $tours = Tour::with(['travel'])
+                            ->whereHas('travel', fn ($q) => $q->where('isPublic', true))
+                            ->where('name', 'like', "%{$q}%")
+                            ->orWhere('description', 'like', "%{$q}%")
+                            ->limit(3)
+                            ->get()
+                            ->toArray();
+
+                        $results = ['tours' => $tours];
+                        break;
+
                     case 'users':
                         $users = User::where('name', 'like', "%{$q}%")
                             ->orWhere('email', 'like', "%{$q}%")
@@ -103,6 +112,9 @@ class SearchController extends Controller
                             ->toArray();
 
                         $results = ['users' => $users];
+                        break;
+
+                    default:
                         break;
                 }
             }
