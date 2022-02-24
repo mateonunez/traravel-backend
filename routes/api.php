@@ -59,6 +59,16 @@ Route::group([
 });
 
 /**
+ * Search API
+ */
+Route::group([
+    'prefix' => 'search',
+    'as' => 'search.'
+], function () {
+    Route::get('/', [\App\Http\Controllers\SearchController::class, 'search']);
+});
+
+/**
  * Authenticated routes
  */
 Route::group([
