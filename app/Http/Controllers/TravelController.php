@@ -33,8 +33,7 @@ class TravelController extends Controller
             $travels = $this->model::with([
                 'moods',
                 'tours' => fn ($q) => $q->orderBy('startingDate', 'asc')
-            ])
-                ->where('isPublic', true);
+            ]);
 
             if (!$user || !$user?->isEditor()) {
                 $travels = $travels->where('isPublic', true);
