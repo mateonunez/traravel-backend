@@ -10,6 +10,7 @@ use App\Models\Travel;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
@@ -46,9 +47,7 @@ class SearchController extends Controller
                     'moods',
                     'tours' => fn ($q) => $q->orderBy('startingDate', 'asc')
                 ])
-                    ->where('isPublic', true)
-                    ->where('name', 'like', "%{$q}%")
-                    ->orWhere('description', 'like', "%{$q}%")
+                    ->whereRaw("(LOWER(name) LIKE '%" . strtolower($q) . "%' OR LOWER(description) LIKE '%" . strtolower($q) . "%') AND isPublic = 1")
                     ->limit(3)
                     ->get()
                     ->toArray();
@@ -82,9 +81,7 @@ class SearchController extends Controller
                             'moods',
                             'tours' => fn ($q) => $q->orderBy('startingDate', 'asc')
                         ])
-                            ->where('isPublic', true)
-                            ->where('name', 'like', "%{$q}%")
-                            ->orWhere('description', 'like', "%{$q}%")
+                            ->whereRaw("(LOWER(name) LIKE '%" . strtolower($q) . "%' OR LOWER(description) LIKE '%" . strtolower($q) . "%') AND isPublic = 1")
                             ->limit(3)
                             ->get()
                             ->toArray();
