@@ -58,3 +58,11 @@ Run the tests
 ```shell
 php artisan test
 ```
+
+## Creating New Users
+
+To create a new user you should run the following command:
+
+```shell
+php artisan make:user
+```

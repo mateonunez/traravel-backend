@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
     {
         $payloadAdmin = [
             'name' => 'Admin',
-            'email' => 'admin@traravel.com',
+            'email' => 'admin@traravel.in',
             'password' => Hash::make('admin'),
             'emailVerifiedAt' => Carbon::now()
         ];
@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
 
         $payloadEditor = [
             'name' => 'Editor',
-            'email' => 'editor@traravel.com',
+            'email' => 'editor@traravel.in',
             'password' => Hash::make('editor'),
             'emailVerifiedAt' => Carbon::now()
         ];
