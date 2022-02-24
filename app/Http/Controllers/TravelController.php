@@ -74,7 +74,7 @@ class TravelController extends Controller
                 ->orWhere('id', $slugOrId)
                 ->first();
 
-            if (!$user || !$user?->isEditor() && !$travel->isPublic) {
+            if (!$user?->isEditor() && !$travel->isPublic) {
                 return $this->sendNotFound();
             }
 
