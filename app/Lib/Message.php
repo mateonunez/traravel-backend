@@ -24,7 +24,8 @@ class Message
     public const BAD_REQUEST = "[00013] - Bad request.";
     public const REGISTER_KO = "[00014] - Error during registration.";
     public const CREDENTIALS_KO = "[00015] - Invalid credentials.";
-    public const INVALID_DATE = "[00015] - Invalid date.";
+    public const INVALID_DATE = "[00016] - Invalid date.";
+    public const NO_QUERY_PROVIDED = "[00017] - No query provided.";
 
     /**
      * Messages

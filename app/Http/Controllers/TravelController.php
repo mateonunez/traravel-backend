@@ -30,40 +30,19 @@ class TravelController extends Controller
                 ? auth('api')->user()
                 : auth()->user();
 
-            $travels = $this->model::with(['moods', 'tours']);
+            $travels = $this->model::with([
+                'moods',
+                'tours' => fn ($q) => $q->orderBy('startingDate', 'asc')
+            ]);
 
             if (!$user || !$user?->isEditor()) {
                 $travels = $travels->where('isPublic', true);
             }
 
-            $travels = $travels->get()->toArray();
 
-            return $this->sendResponse($travels, Message::INDEX_OK);
-        } catch (\Exception $e) {
-            // TODO Add log here
-            return $this->sendError($e->getMessage());
-        }
-    }
-
-    /**
-     * Search API
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function search(Request $request): JsonResponse
-    {
-        try {
-            $travels = $this->model::with('moods')
-                ->where('isPublic', true)
-                ->limit(3);
-
-            $query = $request->query();
-
-            // search criteria
-
-            $travels = $travels->get()->toArray();
+            $travels = $travels
+                ->get()
+                ->toArray();
 
             return $this->sendResponse($travels, Message::INDEX_OK);
         } catch (\Exception $e) {
@@ -87,7 +66,10 @@ class TravelController extends Controller
                 ? auth('api')->user()
                 : auth()->user();
 
-            $travel = $this->model::with(['moods', 'tours'])
+            $travel = $this->model::with([
+                'moods',
+                'tours' => fn ($q) => $q->orderBy('startingDate', 'asc')
+            ])
                 ->where('slug', $slugOrId)
                 ->orWhere('id', $slugOrId)
                 ->first();
