@@ -89,7 +89,7 @@ Route::group([
      * Admin routes
      */
     Route::group([
-        'middleware' => ['admin']
+        'middleware' => ['editor'] // admin bypass this middleware
     ], function () {
         Route::apiResources([
             '/users' => \App\Http\Controllers\UserController::class,
