@@ -62,7 +62,8 @@ class SearchController extends Controller
                     ->toArray();
 
                 if ($user && $user->isAdmin()) {
-                    $users = User::where('name', 'like', "%{$q}%")
+                    $users = User::with(['roles'])
+                        ->where('name', 'like', "%{$q}%")
                         ->orWhere('email', 'like', "%{$q}%")
                         ->limit(3)
                         ->get()
@@ -82,7 +83,7 @@ class SearchController extends Controller
                             'tours' => fn ($q) => $q->orderBy('startingDate', 'asc')
                         ])
                             ->whereRaw("(LOWER(name) LIKE '%" . strtolower($q) . "%' OR LOWER(description) LIKE '%" . strtolower($q) . "%') AND isPublic = 1")
-                            ->limit(3)
+                            ->limit(10)
                             ->get()
                             ->toArray();
 
@@ -94,7 +95,7 @@ class SearchController extends Controller
                             ->whereHas('travel', fn ($q) => $q->where('isPublic', true))
                             ->where('name', 'like', "%{$q}%")
                             ->orWhere('description', 'like', "%{$q}%")
-                            ->limit(3)
+                            ->limit(10)
                             ->get()
                             ->toArray();
 
@@ -102,9 +103,10 @@ class SearchController extends Controller
                         break;
 
                     case 'users':
-                        $users = User::where('name', 'like', "%{$q}%")
+                        $users = User::with(['roles'])
+                            ->where('name', 'like', "%{$q}%")
                             ->orWhere('email', 'like', "%{$q}%")
-                            ->limit(3)
+                            ->limit(10)
                             ->get()
                             ->toArray();
 
