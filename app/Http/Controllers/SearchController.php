@@ -9,7 +9,6 @@ use App\Models\User;
 use App\Models\Travel;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
@@ -35,8 +34,8 @@ class SearchController extends Controller
 
             $query = $request->query();
 
-            $type = $query['type'] ?? null;
-            $q = $query['q'] ?? null;
+            $type = isset($query['type']) ? addslashes($query['type']) : null;
+            $q = isset($query['q']) ? addslashes($query['q']) : null;
 
             if (!$q) {
                 return $this->sendResponse([], Message::NO_QUERY_PROVIDED);
@@ -100,17 +99,6 @@ class SearchController extends Controller
                             ->toArray();
 
                         $results = ['tours' => $tours];
-                        break;
-
-                    case 'users':
-                        $users = User::with(['roles'])
-                            ->where('name', 'like', "%{$q}%")
-                            ->orWhere('email', 'like', "%{$q}%")
-                            ->limit(10)
-                            ->get()
-                            ->toArray();
-
-                        $results = ['users' => $users];
                         break;
 
                     default:
